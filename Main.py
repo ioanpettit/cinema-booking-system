@@ -1,14 +1,7 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
 
 
 #! pip install tkinter
 #! pip install customtkinter
-
-
-# In[2]:
 
 
 # importing packages
@@ -23,8 +16,6 @@ from tkinter import ttk
 import customtkinter
 
 
-# In[3]:
-
 
 #drawing random names
 random.seed(10) # set seed to ensure same names each time
@@ -34,16 +25,10 @@ pnts = [names.get_full_name() for i in range(0,5)]
 other = [names.get_full_name() for i in range(0,5)]
 
 
-# In[4]:
-
-
 # creating a list of all names
 everyone = men+women+pnts+other
 random.seed(10)
 random.shuffle(everyone)
-
-
-# In[5]:
 
 
 # appending gender based on their name from before
@@ -59,17 +44,12 @@ for i in everyone:
         gender.append('other')
 
 
-# In[6]:
-
 
 # setting up Customers dataframe, setting seed to ensure same ages and email each time
 random.seed(10)
 Customers = pd.DataFrame({'ID':range(1,81),'Name':everyone,'Gender':gender, 
                           'Age':[random.randint(12,90) for i in range(len(everyone))],
                          'Email Address':[i.replace(' ','').lower()+random.choice(['@notreal.com','@fakemail.com','@madeup.com']) for i in everyone]})
-
-
-# In[8]:
 
 
 # creating a dataframe of the films 
@@ -81,15 +61,11 @@ Films = pd.DataFrame({'ID': range(1,6), 'Name':['Avatar: The Way of Water',
                      'Genre': ['Fantasy','Action','Drama','Mystery','Drama'],
 
 
-# In[9]:
-
 
 # creating a dataframe of the showings
 times = []
 Showings = pd.DataFrame({'ID': range(1,9),'Time':['2022-12-5 08:30','2022-12-5 09:00', '2022-12-5 11:15', '2022-12-5 11:15','2022-12-5 13:05','2022-12-5 14:00','2022-12-5 16:50', '2022-12-5 20:00'], 'Screen':[1,3,4,2,4,3,2,1], 'Film ID':[4,2,1,5,3,2,4,1]})
 
-
-# In[10]:
 
 
 # Creating the seat options available for each showing
@@ -98,9 +74,6 @@ for k in range(1,9):
     for i in ['A','B','C','D']:
         for j in range(1,6):
             seat_options.append(f'S{k} {i}{j}')
-
-
-# In[11]:
 
 
 # making 80 seat choices randomly from the ones available
@@ -113,18 +86,12 @@ for i in range(1,81):
     seat_number.append(choice) # appending choice to list
 
 
-# In[12]:
-
-
 # creating a dataframe for the bookings
 random.seed(10) # set seed
 showingid = [i[1:2] for i in seat_number] # taking the showing number from the list
 bookings = pd.DataFrame({'ID':range(1,81),'Customer ID':random.sample(range(1,81),80), # sampling a random customer ID
                          'Showing ID': showingid, 
                         'Seat Number': [i[-2:] for i in seat_number]}) # taking the seat number from the list
-
-
-# In[14]:
 
 
 # split up the lists based on screening. This is for the combination dropdown box in the UI
@@ -141,11 +108,6 @@ for j in range(len(seat_options_remove)):
 
 
 
-
-
-# In[16]:
-
-
 # joining showings and films to get names
 
 sho_join = Showings.merge(Films, left_on = 'Film ID', right_on = 'ID' )[['ID_x', 'Name']]
@@ -158,8 +120,6 @@ for i in range(len(sho_join)):
      names_showings.append(f'Showing {sho_join["ID_x"][i]}: {sho_join["Name"][i]}')
 
 
-# In[17]:
-
 
 # getting all the data into lists of tuples to be able to send to the database
 
@@ -167,7 +127,6 @@ showings_for_db = []
 bookings_for_db = []
 films_for_db = []
 customers_for_db = []
-
 
 
 for i in range(len(Showings)):
@@ -179,9 +138,6 @@ for i in range(len(Films)):
 for i in range(len(Customers)):
     customers_for_db.append(tuple(Customers.iloc[i,:].map(str)))
  
-
-
-# In[18]:
 
 
 ## this sends all the original data to the database
@@ -213,9 +169,6 @@ conn.commit()
 conn.close()
 
 
-# In[20]:
-
-
 def update_database(name,age,gender,email,showing_seat,showing):
     '''This function will update the SQL database when new bookings are made'''
     # starts connection    
@@ -235,9 +188,6 @@ def update_database(name,age,gender,email,showing_seat,showing):
     # commits changes and closes the session    
     update_conn.commit()
     update_conn.close()
-
-
-# In[21]:
 
 
 def remove_seats(seat):
@@ -264,8 +214,6 @@ def remove_seats(seat):
                 screening_free[k+1].append(seat_options_remove[j][-2:])
 
 
-# In[22]:
-
 
 def ensure_filled():
     '''makes sure that all the variables are filled out. returns 0 if something isnt filled out '''
@@ -278,8 +226,6 @@ def ensure_filled():
         checker = 0
         return checker
 
-
-# In[23]:
 
 
 def update_dataframes(name,age,gender,email,showing_seat,showing):
@@ -301,8 +247,6 @@ def update_dataframes(name,age,gender,email,showing_seat,showing):
     #appends to the booking table    
     bookings.loc[len(bookings.index)] = [len(bookings.index)+1,cust_id,showing,showing_seat]
 
-
-# In[24]:
 
 
 def click():
@@ -335,18 +279,12 @@ def click():
         open_popup()
         
 
-
-# In[25]:
-
-
 def pick_Seat(e):
     '''function that runs from the first dropdown menu to get values for the second dropdown menu'''
     for s in range(len(screening_free)):
         if my_combo.get() == names_showings[s]:
             my_combo2.config(value = screening_free[s+1])
 
-
-# In[26]:
 
 
 def open_popup():
@@ -362,10 +300,8 @@ def open_popup():
     exit.place(relx=0.6,rely=0.9,anchor=CENTER)
 
 
-# In[27]:
 
-
-## This cell runs the UI
+## This runs the UI
 
 # sets the appearance of the UI
 customtkinter.set_appearance_mode('Dark')
