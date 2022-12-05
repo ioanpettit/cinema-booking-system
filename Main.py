@@ -59,7 +59,8 @@ Films = pd.DataFrame({'ID': range(1,6), 'Name':['Avatar: The Way of Water',
                                                 'Glass Onion: A Knives Out Mystery',
                                                'Aftersun'],
                      'Genre': ['Fantasy','Action','Drama','Mystery','Drama'],
-
+                                           'Rating': [12,12,15,12,12]})
+                    
 
 
 # creating a dataframe of the showings
