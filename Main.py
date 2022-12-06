@@ -344,8 +344,6 @@ genderentry.place(relx=0.3,rely=0.7,anchor=CENTER)
 submit = customtkinter.CTkButton(window,text='Submit', width=90, height=50,command=click,text_font=("Quire Sans", -50))
 submit.place(relx=0.4,rely=0.9,anchor=CENTER)
 
-#variable = StringVar(window)
-#OptionMenu(window, variable, *seat_options_remove).grid(row=5,column=2, sticky=W)
 
 # creates a label with text saying 'showing' and places it in the window
 showinglabel = customtkinter.CTkLabel(window, text = "Showing: ",text_font=("Quire Sans", -50), pady=10)
@@ -382,7 +380,7 @@ textentryemail.place(relx=0.85,rely=0.7,anchor=CENTER)
 exit = customtkinter.CTkButton(window,text='Exit', width=100, height =50, command=window.destroy,text_font=("Quire Sans", -50))
 exit.place(relx=0.6,rely=0.9,anchor=CENTER)
 
-# gets logo image from file and puts it in the window
+# gets logo image from file and puts it in the window, make sure you create a logo and change this to the filepath
 img = PhotoImage(file="CinemaLogo.gif")
 img = img.subsample(2)
 logo = customtkinter.CTkLabel(window, image=img,bg='black')
